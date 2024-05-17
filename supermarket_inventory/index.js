@@ -1,5 +1,5 @@
 // Define the CRUD-CRUD API URL
-const apiUrl = 'https://crudcrud.com/api/93065f0e97b64f9093fe7d67d787a893/items';
+const apiUrl = 'https://crudcrud.com/api/9805c18b89eb40fbb93882ffdbddb3f9/items';
 
 // Function to fetch inventory items from the server
 async function fetchInventory() {
@@ -12,9 +12,9 @@ async function fetchInventory() {
 }
 
 // Function to update item quantity after purchase
-async function updateItem(itemId, newQuantity) {
+async function updateItem(itemId,Itemname,Description,Price,newQuantity) {
     try {
-        const response = await axios.put(`${apiUrl}/${itemId}`, { quantity: newQuantity });
+        const response = await axios.put(`${apiUrl}/${itemId}`, { itemname:Itemname,description:Description,price:Price,quantity: newQuantity });
         console.log('Item updated:', response.data);
         // Refresh inventory after updating
         displayInventory();
@@ -38,7 +38,7 @@ async function displayInventory() {
                 <td>${item.description}</td>
                 <td>$${item.price}</td>
                 <td>${item.quantity}</td>
-                <td><button onclick="buyItem('${item._id}', ${item.quantity})">Buy</button></td>
+                <td><button onclick="buyItem('${item._id}','${item.itemname}','${item.description}',${item.price},${item.quantity})">Buy</button></td>
             `;
             inventoryList.appendChild(row);
         });
@@ -46,11 +46,11 @@ async function displayInventory() {
 }
 
 // Function to handle buying an item
-function buyItem(itemId, currentQuantity) {
+function buyItem(itemId,Itemname,Description,Price, currentQuantity) {
     const buyQuantity = parseInt(prompt('Enter quantity to buy:', '1'));
     if (buyQuantity && buyQuantity > 0 && buyQuantity <= currentQuantity) {
         const newQuantity = currentQuantity - buyQuantity;
-        updateItem(itemId, newQuantity);
+        updateItem(itemId,Itemname,Description,Price, newQuantity);
     } else {
         alert('Invalid quantity or not enough stock.');
     }
